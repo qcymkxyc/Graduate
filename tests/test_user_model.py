@@ -11,6 +11,7 @@
 """
 import unittest
 from app.models import User
+from app import db
 
 class UserModelTestCase(unittest.TestCase):
     """测试用户Model"""
@@ -26,8 +27,16 @@ class UserModelTestCase(unittest.TestCase):
             self.user.password
 
     def test_password_vertify(self):
-        self. assertTrue(self.user.vertify_password("cat"))
+        self.assertTrue(self.user.vertify_password("cat"))
         self.assertFalse(self.user.vertify_password("dog"))
+
+    def test_user_add(self):
+        self.user.email = "123456@qq.com"
+        self.user.password = "123456"
+        self.user.name = "aaa"
+        db.session.add(self.user)
+        db.session.commit()
+
 
     def test_password_hash(self):
         u2 = User(password = "dog")
