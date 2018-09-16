@@ -40,6 +40,8 @@ def create_app(config_name = "default"):
     app.register_blueprint(main)
     from .auth import auth
     app.register_blueprint(auth,url_prefix = "/auth")
+    from .product import product_blueprint
+    app.register_blueprint(product_blueprint,url_prefix = "/products")
 
     return app;
 

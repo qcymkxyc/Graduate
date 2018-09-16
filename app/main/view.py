@@ -12,6 +12,7 @@ from .. import db
 def index():
     # print(current_user.is_)
     return render_template("index.html")
+    # return render_template("static/charisma-master/index.html")
 
 @main_blueprint.route("/user/<username>")
 def user(username):

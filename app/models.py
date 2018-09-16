@@ -141,6 +141,9 @@ class Product(db.Model):
 
     #视频
     video_path = db.Column(db.String(256))
+    #是否有毕业论文
+    is_doc = db.Column(db.Boolean,default = False)
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self,permissions):
