@@ -8,11 +8,13 @@ from ..models import User,Role
 from .form import EditProfileForm
 from .. import db
 
+@main_blueprint.route("/admin")
+def admin():
+    return render_template("admin.html")
+
 @main_blueprint.route("/")
 def index():
-    # print(current_user.is_)
     return render_template("index.html")
-    # return render_template("static/charisma-master/index.html")
 
 @main_blueprint.route("/user/<username>")
 def user(username):

@@ -4,6 +4,7 @@
 """
     配置文件
 """
+from flask_uploads import UploadSet,IMAGES,AUDIO,configure_uploads,ALL,patch_request_class
 import os
 
 username = "root"
@@ -20,6 +21,10 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_COMMIT_TEARDOWN = True
 
+
+    UPLOADED_DEFAULT_DEST = os.getcwd()
+    UPLOADED_IMAGE_DEST = os.path.join(UPLOADED_DEFAULT_DEST,"data")
+    UPLOADED_VIDEO_DEST = os.path.join(UPLOADED_DEFAULT_DEST,"data")
 
     @staticmethod
     def init_app(app):

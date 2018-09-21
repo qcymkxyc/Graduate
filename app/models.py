@@ -129,7 +129,7 @@ class Product(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     name = db.Column(db.String(64),index = True)
-    language_id = db.Column(db.Integer,db.ForeignKey("t_language.id"))
+    language_id = db.Column(db.Integer,db.ForeignKey("t_language.id"),index = True)
 
     #产品描述
     description = db.Column(db.String(1024))
@@ -142,8 +142,36 @@ class Product(db.Model):
     #视频
     video_path = db.Column(db.String(256))
     #是否有毕业论文
-    is_doc = db.Column(db.Boolean,default = False)
+    is_doc = db.Column(db.Boolean,default = False,index = True,comment="是否有毕业论文")
+    prices = db.Column(db.FLOAT,default=100.)
+    baidu_url = db.Column(db.String(256),comment = "百度云url")
 
+    def to_json(self):
+        json_product = {
+            "id" : self.id,
+            "name" : self.name,
+            "language_id" : self.language_id,
+            "language" : self.language.name,
+            "description" : self.description,
+            "picture1_path" : self.picture1_path,
+            "picture2_path" : self.picture2_path,
+            "picture3_path" : self.picture3_path,
+            "video_path" : self.video_path,
+            "is_doc" : self.is_doc
+        }
+        return json_product
+
+    @staticmethod
+    def from_json(self,json_product):
+        product = Product()
+        product.id = json_product.get("id")
+        product.name = json_product.get("name")
+        product.language_id = json_product.get("language_id")
+        product.description = json_product.get("description")
+        product.video_path = json_product.get("video_path")
+        product.is_doc = json_product.get("is_doc")
+
+        return product
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self,permissions):

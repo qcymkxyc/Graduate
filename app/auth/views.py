@@ -17,10 +17,10 @@ from .forms import LoginForm,RegistrationForm,ChangePasswordForm
 from ..models import User
 from .. import db
 
-@auth.before_app_request
-def before_request():
-    if current_user.is_authenticated:
-        current_user.ping()
+# @auth.before_app_request
+# def before_request():
+#     if current_user.is_authenticated:
+#         current_user.ping()
         # TODO
         # if not current_user
 

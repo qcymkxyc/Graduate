@@ -1,0 +1,30 @@
+
+<h1 align="center" style="padding-top: 30px;">商品列表</h1>
+<div style="padding-top: 30px;">
+    <table class="layui-hide" id="products_table" ></table>
+</div>
+
+
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+
+  table.render({
+    elem: '#products_table'
+    ,url:'api/v1/products'
+    ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+    ,cols: [[
+      {field:'id', width:80, title: 'ID', sort: true}
+      ,{field:'name', width:150, title: '产品名'}
+      ,{field:'language', width:80, title: '语言', sort: true}
+      ,{field:'description', width:80, title: '描述'}
+      ,{field:'picture1_path', title: '图片1', minWidth: 100}
+      ,{field:'picture2_path', title: '图片2', minWidth: 100}
+      ,{field:'picture3_path', title: '图片3', minWidth: 100}//minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+      ,{field:'video_path', title: '视频路径', sort: true}
+      ,{field:'is_doc', title: '是否有文档', sort: true}
+    ]]
+  });
+});
+</script>
+
