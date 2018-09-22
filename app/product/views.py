@@ -2,7 +2,7 @@ from . import product_blueprint
 from flask import render_template,redirect
 from flask_login import current_user,login_required
 from ..models import Product
-from .forms import ProductAddForm
+from .forms import ProductAddForm,ProductFindForm
 from .. import db,products_images,products_video
 from ..util.product import save_product
 
@@ -29,4 +29,9 @@ def add_product():
 
 @product_blueprint.route("/list_products",methods = ["GET"])
 def list_product():
-    return render_template("products/list_products.html")
+    return render_template("products/list_products.html",)
+
+@product_blueprint.route("/find_products",methods = ["GET"])
+def find_product():
+    form = ProductFindForm()
+    return render_template("products/find_products.html",form = form)

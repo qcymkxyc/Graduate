@@ -58,3 +58,42 @@ class ProductAddForm(Form):
     def __init__(self):
         super(ProductAddForm,self).__init__()
         self.language.choices = [(single_language.id,single_language.name) for single_language in Language.query.all()]
+
+
+class ProductFindForm(Form):
+    name = StringField(label="商品名")
+    language = SelectField(
+        label = "语言",
+        coerce=int
+    )
+    have_doc = RadioField(
+        label = "是否有论文",
+        choices = [
+            (True,"是"),
+            (False,"否")
+        ],
+        coerce = bool,
+        default = False
+    )
+    have_img = RadioField(
+        label = "是否有图片",
+        choices=[
+            (True,"是"),
+            (False,"否")
+        ],
+        coerce=bool
+    )
+    have_video = RadioField(
+        label = "是否有视频",
+        choices=[
+            (True,"是"),
+            (False,"否")
+        ],
+        coerce=bool
+    )
+
+    submit = SubmitField("查询")
+
+    def __init__(self):
+        super(ProductFindForm, self).__init__()
+        self.language.choices = [(single_language.id, single_language.name) for single_language in Language.query.all()]

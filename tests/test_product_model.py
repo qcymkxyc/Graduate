@@ -30,6 +30,12 @@ class ProductModelTestCase(unittest.TestCase):
         db.session.add(self.product)
         db.session.commit()
 
+    def test_generate_prodoct(self):
+        """
+        生成假数据
+        :return:
+        """
+        Product.generate_fake(100)
 
     def tearDown(self):
         pass

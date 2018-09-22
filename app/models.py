@@ -173,6 +173,32 @@ class Product(db.Model):
 
         return product
 
+    @staticmethod
+    def generate_fake(count = 100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed,randint
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            p = Product(
+                name = forgery_py.name.full_name(),
+                language_id = randint(1,6),
+                description = forgery_py.lorem_ipsum.sentence(),
+                picture1_path=forgery_py.lorem_ipsum.sentence(),
+                picture2_path=forgery_py.lorem_ipsum.sentence(),
+                picture3_path=forgery_py.lorem_ipsum.sentence(),
+                video_path = forgery_py.lorem_ipsum.word(),
+                baidu_url=forgery_py.internet.domain_name(),
+                prices=randint(0,2000),
+                is_doc=False
+            )
+            db.session.add(p)
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+
 class AnonymousUser(AnonymousUserMixin):
     def can(self,permissions):
         return False
