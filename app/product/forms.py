@@ -66,30 +66,35 @@ class ProductFindForm(Form):
         label = "语言",
         coerce=int
     )
-    have_doc = RadioField(
+    have_doc = SelectField(
         label = "是否有论文",
         choices = [
-            (True,"是"),
-            (False,"否")
+            (-1,"无限制"),
+            (1,"是"),
+            (0,"否")
         ],
-        coerce = bool,
-        default = False
+        default = -1,
+        coerce=int
     )
-    have_img = RadioField(
+    have_img = SelectField(
         label = "是否有图片",
         choices=[
-            (True,"是"),
-            (False,"否")
+            (-1,"无限制"),
+            (1,"是"),
+            (0,"否")
         ],
-        coerce=bool
+        default=-1,
+        coerce=int
     )
-    have_video = RadioField(
+    have_video = SelectField(
         label = "是否有视频",
         choices=[
-            (True,"是"),
-            (False,"否")
+            (-1,"无限制"),
+            (1,"是"),
+            (0,"否")
         ],
-        coerce=bool
+        default=-1,
+        coerce=int
     )
 
     submit = SubmitField("查询")

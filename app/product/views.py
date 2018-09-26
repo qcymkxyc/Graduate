@@ -22,8 +22,6 @@ def add_product():
 
         db.session.add(product)
         db.session.commit()
-        # print(product.id)
-        # return render_template(url_for("main"))
         return render_template("products/add_products.html", form=form)
     return render_template("products/add_products.html",form = form)
 
