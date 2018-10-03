@@ -1,5 +1,5 @@
 from . import product_blueprint
-from flask import render_template,redirect
+from flask import render_template,request
 from flask_login import current_user,login_required
 from ..models import Product
 from .forms import ProductAddForm,ProductFindForm
@@ -29,7 +29,30 @@ def add_product():
 def list_product():
     return render_template("products/list_products.html",)
 
-@product_blueprint.route("/find_products",methods = ["GET"])
+@product_blueprint.route("/find_products",methods = ["GET","POST"])
 def find_product():
-    form = ProductFindForm()
-    return render_template("products/find_products.html",form = form)
+    page = request.args.get(key="page",default=1,type=int)
+    limit= request.args.get(key="limit",default=12,type=int)
+    search_name = request.args.get(key="search_name")
+
+    filters = dict()
+    filters["language_id"] = request.args.get(key="product_language",type=int,default=-1)
+
+    paginate = (Product.query.filter(
+                    Product.name.like("%" + search_name + "%"),
+                    ).
+                    filter(*filters).
+                    order_by("id").
+                    paginate(page = page,per_page=limit))
+
+    items = paginate.items
+
+    return render_template("products_list.html",items = items)
+
+@product_blueprint.route("/custom",methods = ["GET"])
+def custom():
+    return render_template("custom.html")
+
+@product_blueprint.route("/single_product",methods =["GET"])
+def single_product():
+    return render_template("single_product.html")

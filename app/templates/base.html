@@ -18,20 +18,21 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Brand</a>
+      <a class="navbar-brand" href="#">
+          <img alt="易帮计算机毕业设计" src="{{ url_for('static',filename='images/易帮32x32.png')}}">
+      </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
+          <p class="navbar-text" style="font: bold">易帮计算机毕设</pi>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">首页</a></li>
+          <li><a href="/">首页</a></li>
         <li><a href="#">JAVA/JSP</a></li>
-          <li><a href="#">C#</a></li>
-          <li><a href="#">毕业设计订做</a></li>
+          <li><a href="#">C#/.NET</a></li>
+          <li><a href="{{ url_for("products.custom") }}" style="color: red;font: bold">毕业设计订做</a></li>
           <li><a href="#">C语言</a></li>
           <li><a href="#">PHP</a></li>
           <li><a href="#">Python</a></li>
