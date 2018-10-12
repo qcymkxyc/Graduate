@@ -1,10 +1,11 @@
 from flask import current_app
 from .. import products_video,products_images
 import os
+from .. import cos_client
 
-def save_product(product_form,product):
+def save_product_local(product_form,product):
     """
-    保存商品的图片及视频
+    保存商品的图片及视频至本地
     :param product_form: 商品的form
     :param product: Product类
     """
@@ -29,4 +30,16 @@ def save_product(product_form,product):
     product.picture3_path = os.path.join(img_base_path,img3_path)
 
     product.video_path = os.path.join(video_base_path,video_path)
+
+
+def save_product_cos(product_form,product):
+    """保存商品信息至COS
+
+    :param product_form: Form
+        商品的Form
+    :param product: Product
+        model中的Product
+    """
+
+
 

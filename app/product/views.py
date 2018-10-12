@@ -4,24 +4,13 @@ from flask_login import current_user,login_required
 from ..models import Product
 from .forms import ProductAddForm,ProductFindForm
 from .. import db,products_images,products_video
-from ..util.product import save_product
+from app.util.product import save_product_local
 
 @product_blueprint.route("/new_product",methods = ["GET","POST"])
 def add_product():
     form = ProductAddForm()
     if form.validate_on_submit():
-        product = Product()
-        product.name = form.name.data
-        product.description = form.description.data
-        product.language_id = form.language.data
-        product.is_doc = form.have_doc.data
-        product.baidu_url = form.baidu_url.data
-        product.prices = form.price.data
-
-        save_product(form,product)
-
-        db.session.add(product)
-        db.session.commit()
+        Product.upload_product(form)
         return render_template("products/add_products.html", form=form)
     return render_template("products/add_products.html",form = form)
 
@@ -30,10 +19,10 @@ def list_product():
     return render_template("products/list_products.html",)
 
 @product_blueprint.route("/find_products",methods = ["GET","POST"])
-def find_product():
+def find_products():
     page = request.args.get(key="page",default=1,type=int)
     limit= request.args.get(key="limit",default=12,type=int)
-    search_name = request.args.get(key="search_name")
+    search_name = request.args.get(key="name",default="")
 
     filters = dict()
     filters["language_id"] = request.args.get(key="product_language",type=int,default=-1)
@@ -47,7 +36,7 @@ def find_product():
 
     items = paginate.items
 
-    return render_template("products_list.html",items = items)
+    return render_template("products_list.html",items = items,pagination= paginate)
 
 @product_blueprint.route("/custom",methods = ["GET"])
 def custom():
@@ -55,4 +44,11 @@ def custom():
 
 @product_blueprint.route("/single_product",methods =["GET"])
 def single_product():
-    return render_template("single_product.html")
+    product_id = request.args.get("id",type=int)
+    product = Product.query.filter_by(id=product_id).first()
+
+    return render_template("single_product.html",product=product)
+
+# @product_blueprint.route("/add_product1",methods = ["GET","POST"])
+# def add_product1():
+

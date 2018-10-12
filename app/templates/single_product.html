@@ -1,6 +1,145 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-    <video src="{{ url_for("static",filename="video/conv_kiank.mp4") }}" controls="controls">
-</video>
+    <div class="page-header" xmlns="http://www.w3.org/1999/html">
+        <h1 class="text-center"><strong>{{ product.name }}</strong></h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <!--图片展示-->
+            <div class="col-md-7">
+                <div class="thumbnail">
+                <img src="{{ product.picture1_path }}" >
+                </div>
+            </div>
+            <!--信息-->
+            <div class="col-md-4 col-md-offset-1">
+                <div class="row">
+                    <p style="font-size: medium">
+                    以下是大纲或介绍,如需要完整的资料请购买下载. 本资料已审核过,内容保密,格式标准,质量保证.
+                    <ol style="font-size: medium">
+                        <li>无需注册登录,购买下载后即可获取该完整的资料.</li>
+                        <li>购买后本站提供下载链接或联系客服发送资料.</li>
+                    </ol>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="text-danger">价格:{{ product.prices }}元</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="text-muted">语言：{{ product.language.name }}</h3>
+                    </div>
+                </div>
+                <!--语言行-->
+                <div class="row">
+                    <div class="col-md-6 ">
+                        {% if not product.is_doc %}<span class="label label-success">有文档</span>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 30px">
+                    <a class="btn btn-success btn-lg btn-block"
+                       href="http://wpa.qq.com/msgrd?v=3&amp;uin=2031656370&amp;site=qq&amp;menu=yes"">
+                    立即咨询
+                    </a>
+                    <button class="btn btn-lg btn-danger btn-block" data-toggle="collapse" data-target="#pay-panel"
+                    aria-expanded="false" aria-controls="pay-panel">
+                        立即购买</button>
+               </div>
+            </div>
+        </div>
+    <!--付款-->
+        <div class="row">
+            <div id="pay-panel" class="collapse">
+                <!--tablist-->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#weixin" aria-controls="weixin" role="tab" data-toggle="tab">微信支付</a>
+                    </li>
+                    <li role="presentation" >
+                        <a href="#zhifubao" aria-controls="zhifubao" role="tab" data-toggle="tab">支付宝支付</a>
+                    </li>
+                    <li role="presentation" >
+                        <a href="#QQ" aria-controls="QQ" role="tab" data-toggle="tab">QQ钱包</a>
+                    </li>
+                </ul>
+                <!--tab-content-->
+                <div class="tab-content">
+                   <!-微信面板-->
+                    <div class="tab-pane active" role="tabpanel" id="weixin">
+                        <img class="thumbnail col-md-2" src="{{ url_for("static",filename="images/wxcode.png") }}">
+                        <br>
+                        <ol class="col-md-4 col-md-offset-1" style="font-size: medium">
+                            <li>打开微信扫描左侧二维码图片.</li>
+                            <li>填写金额: <b class="text-warning">{{ product.prices }}</b></li>
+                            <li>发送<strong class="text-danger">资料编号</strong>到:
+                                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2031656370&amp;site=qq&amp;menu=yes">
+                                    <img src="http://wpa.qq.com/pa?p=2:2031656370:51" alt="QQ咨询" title="QQ咨询" border="0">
+                                </a>
+                                <p class="text-danger"><strong>(资料编号：  {{ product.id }}  )</strong></p>
+                            </li>
+                            会有专人在15分钟内把资料发给你，如未收到请联系客服。
+                        </ol>
+                    </div>
+                    <!--支付宝面板-->
+                    <div class="tab-pane" role="tabpanel" id="zhifubao">
+                        <img class="thumbnail col-md-2" src="{{ url_for("static",filename="images/zfbcode.png") }}">
+                        <br>
+                        <ol class="col-md-4 col-md-offset-1" style="font-size: medium">
+                            <li>打开支付宝扫描左侧二维码图片.</li>
+                            <li>填写金额: <b class="text-warning">{{ product.prices }}</b></li>
+                            <li>发送<strong class="text-danger">资料编号</strong>到:
+                                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2031656370&amp;site=qq&amp;menu=yes">
+                                    <img src="http://wpa.qq.com/pa?p=2:2031656370:51" alt="QQ咨询" title="QQ咨询" border="0">
+                                </a>
+                                <p class="text-danger"><strong>(资料编号：  {{ product.id }}  )</strong></p>
+                            </li>
+                            会有专人在15分钟内把资料发给你，如未收到请联系客服。
+                        </ol>
+                    </div>
+                    <!--QQ钱包面板-->
+                    <div class="tab-pane" role="tabpanel" id="QQ">
+                        <img class="thumbnail col-md-2" src="{{ url_for("static",filename="images/QQcode.png") }}">
+                        <br>
+                        <ol class="col-md-4 col-md-offset-1" style="font-size: medium">
+                            <li>打开手机QQ扫描左侧二维码图片.</li>
+                            <li>填写金额: <b class="text-warning">{{ product.prices }}</b></li>
+                            <li>发送<strong class="text-danger">资料编号</strong>到:
+                                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2031656370&amp;site=qq&amp;menu=yes">
+                                    <img src="http://wpa.qq.com/pa?p=2:2031656370:51" alt="QQ咨询" title="QQ咨询" border="0">
+                                </a>
+                                <p class="text-danger"><strong>(资料编号：  {{ product.id }}  )</strong></p>
+                            </li>
+                            会有专人在15分钟内把资料发给你，如未收到请联系客服。
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--视频行-->
+        <div class="row">
+            <h1 class="text-left">视频演示</h1>
+            <div class="col-md-12 col-md-offset-0">
+                <video src="https://graduate-1253764997.cos.ap-chengdu.myqcloud.com/test.mp4" controls="controls" width="100%" height="100%"/>
+            </div>
+        </div>
+    <!--资料行-->
+        <div class="row">
+            <h1 class="text-left">资料介绍</h1>
+            <br>
+            <blockquote>
+                {{ product.description }}
+            </blockquote>
+        </div>
+    <!--图片行-->
+        <div class="row">
+            <h1 class="text-left">资料图片</h1>
+            <br>
+            <img src="{{ product.picture1_path }}" >
+            <img src="{{ product.picture2_path }}">
+            <img src="{{ product.picture3_path }}">
+        </div>
+    </div>
 {% endblock %}

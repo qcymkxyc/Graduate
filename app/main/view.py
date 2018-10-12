@@ -7,14 +7,16 @@ from flask_login import current_user,login_required
 from ..models import User,Role
 from .form import EditProfileForm
 from .. import db
+from ..product.forms import ProductFindForm
 
 @main_blueprint.route("/admin")
 def admin():
     return render_template("admin.html")
 
-@main_blueprint.route("/")
+@main_blueprint.route("/",methods = ["GET","POST"])
 def index():
-    return render_template("index.html")
+    form = ProductFindForm()
+    return render_template("index.html",form = form)
 
 @main_blueprint.route("/user/<username>")
 def user(username):

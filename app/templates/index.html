@@ -15,12 +15,12 @@
                 <h1><small>Computer Graduation Design Profession Provider</small></h1>
                 <div style="padding: 30px"></div>
             </div>
-            <form action="products/find_products">
+            <form method="post" action="{{ url_for("products.find_products") }}">
             <div class="form-group has-success has-feedback">
                 <div class="input-group input-group-lg">
-                    <input type="text" class="form-control input-lg" name = "search_name" id="search_name" placeholder="输入你想查找的毕业设计">
+                    {{ form.name(class="form-control input-lg",placeholder="输入你想查找的毕业设计",id="search_name") }}
                     <span class="input-group-btn">
-                        <button class="btn btn-success" type="submit" onclick="search_product()">
+                        <button class="btn btn-success" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>

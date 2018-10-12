@@ -26,6 +26,14 @@ class Config(object):
     UPLOADED_IMAGE_DEST = os.path.join(UPLOADED_DEFAULT_DEST,"data")
     UPLOADED_VIDEO_DEST = os.path.join(UPLOADED_DEFAULT_DEST,"data")
 
+#   腾讯云COS
+    COS_APPID = 1253764997
+    COS_SECRET_ID = "AKIDZCJE4PylpmaQSKGTq11pS2TiojU3hddQ"
+    COS_SECRET_KEY = "lKeTDqJahhiBwd7PUxePG3gImMII7we8"
+    COS_REGION = "ap-chengdu"
+    COS_BUCKET = "graduate-1253764997"
+    COS_BUCKET_PATH = "https://{bucket}.cos.{region}.myqcloud.com".format(bucket=COS_BUCKET,region=COS_REGION)  #生成的Bucket基路径
+
     @staticmethod
     def init_app(app):
         pass

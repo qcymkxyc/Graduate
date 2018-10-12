@@ -9,6 +9,9 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app,request
 from datetime import datetime
 
+from app.util import cos
+from conf import Config
+
 class User(db.Model,UserMixin):
     __tablename__ = "t_user"
 
@@ -162,7 +165,7 @@ class Product(db.Model):
         return json_product
 
     @staticmethod
-    def from_json(self,json_product):
+    def from_json(json_product):
         product = Product()
         product.id = json_product.get("id")
         product.name = json_product.get("name")
@@ -175,7 +178,6 @@ class Product(db.Model):
 
     @staticmethod
     def generate_fake(count = 100):
-        from sqlalchemy.exc import IntegrityError
         from random import seed,randint
         import forgery_py
 
@@ -184,7 +186,7 @@ class Product(db.Model):
             p = Product(
                 name = forgery_py.name.full_name(),
                 language_id = randint(1,6),
-                description = forgery_py.lorem_ipsum.sentence(),
+                description = forgery_py.lorem_ipsum.paragraph(sentences_quantity=10),
                 picture1_path=forgery_py.lorem_ipsum.sentence(),
                 picture2_path=forgery_py.lorem_ipsum.sentence(),
                 picture3_path=forgery_py.lorem_ipsum.sentence(),
@@ -198,6 +200,49 @@ class Product(db.Model):
                 db.session.commit()
             except:
                 db.session.rollback()
+
+    @staticmethod
+    def upload_product(product_form):
+        """上传文件
+
+        分两次提交数据库，第一次提交拿到数据的id，用id生成保存的文件夹名，再将
+        文件上传至COS该文件夹下，第二次将COS上对应的文件路径存进数据库
+
+        :param product_form:Form
+            产品上传数据
+        """
+        product = Product()
+        product.name = product_form.name.data
+        product.description = product_form.description.data
+        product.language_id = product_form.language.data
+        product.is_doc = product_form.have_doc.data
+        product.baidu_url = product_form.baidu_url.data
+        product.prices = product_form.price.data
+
+        db.session.add(product)
+        try:
+            db.session.commit()
+
+            video_path = "{id}/video.mp4".format(id=product.id)
+            picture1_path = "{id}/img1.png".format(id=product.id)
+            picture2_path = "{id}/img2.png".format(id=product.id)
+            picture3_path = "{id}/img3.png".format(id=product.id)
+
+            cos.upload_binary_file(binary_file=product_form.video.data,key=video_path)
+            cos.upload_binary_file(binary_file=product_form.img1.data,key=picture1_path)
+            cos.upload_binary_file(binary_file=product_form.img2.data,key=picture2_path)
+            cos.upload_binary_file(binary_file=product_form.img3.data,key=picture3_path)
+
+            product.video_path = Config.COS_BUCKET_PATH + "/" + video_path
+            product.picture1_path = Config.COS_BUCKET_PATH + "/" + picture1_path
+            product.picture2_path = Config.COS_BUCKET_PATH + "/" + picture2_path
+            product.picture3_path = Config.COS_BUCKET_PATH + "/" + picture3_path
+
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self,permissions):

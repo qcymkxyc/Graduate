@@ -19,7 +19,8 @@ class ProductModelTestCase(unittest.TestCase):
 
         print(self.product.id)
 
-    def test_productcn_add(self):
+
+    def test_product_cn_add(self):
         """
         测试中文插入
         :return:
@@ -36,6 +37,7 @@ class ProductModelTestCase(unittest.TestCase):
         :return:
         """
         Product.generate_fake(100)
+
 
     def tearDown(self):
         pass

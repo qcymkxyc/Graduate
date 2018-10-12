@@ -7,9 +7,10 @@ from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_moment import Moment
 from flask_login import LoginManager
+from flask_uploads import UploadSet,configure_uploads,IMAGES
+from qcloud_cos import CosConfig,CosS3Client
 
 import conf
-from flask_uploads import UploadSet,configure_uploads,IMAGES,AUDIO
 
 bootstrap = Bootstrap()
 mail = Mail()
@@ -22,6 +23,13 @@ login_manager.login_view = "auth.login"
 
 products_images = UploadSet("image",IMAGES,)
 products_video = UploadSet("video",("flv","mp4"))
+
+#腾讯云COS配置和客户端
+cos_config = CosConfig(
+    Region=conf.Config.COS_REGION,
+    Secret_id=conf.Config.COS_SECRET_ID,
+    Secret_key=conf.Config.COS_SECRET_KEY)
+cos_client = CosS3Client(cos_config)
 
 def create_app(config_name = "default"):
     """
