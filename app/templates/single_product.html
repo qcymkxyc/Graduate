@@ -9,7 +9,7 @@
             <!--图片展示-->
             <div class="col-md-7">
                 <div class="thumbnail">
-                <img src="{{ product.picture1_path }}" >
+                <img src="{{ product.imgs_path.split(";")[0] }}" >
                 </div>
             </div>
             <!--信息-->
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="row" style="padding-top: 30px">
-                    <a class="btn btn-success btn-lg btn-block"
+                    <a class="btn btn-success btn-lg btn-block" target="_blank"
                        href="http://wpa.qq.com/msgrd?v=3&amp;uin=2031656370&amp;site=qq&amp;menu=yes"">
                     立即咨询
                     </a>
@@ -137,9 +137,9 @@
         <div class="row">
             <h1 class="text-left">资料图片</h1>
             <br>
-            <img src="{{ product.picture1_path }}" >
-            <img src="{{ product.picture2_path }}">
-            <img src="{{ product.picture3_path }}">
+            {% for img_path in product.imgs_path.split(";") %}
+            <img src="{{ img_path }}" class="thumbnail">
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

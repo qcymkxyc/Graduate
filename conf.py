@@ -4,13 +4,13 @@
 """
     配置文件
 """
-from flask_uploads import UploadSet,IMAGES,AUDIO,configure_uploads,ALL,patch_request_class
 import os
 
 username = "root"
 pw = "123456"
 host = "47.94.80.98"
 database = "graduate"
+
 
 class Config(object):
 

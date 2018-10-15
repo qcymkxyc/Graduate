@@ -12,6 +12,7 @@ from datetime import datetime
 from app.util import cos
 from conf import Config
 
+
 class User(db.Model,UserMixin):
     __tablename__ = "t_user"
 
@@ -78,6 +79,7 @@ class User(db.Model,UserMixin):
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
 
+
 class Permission:
     FOLLOW = 0x01
     COMMENT = 0x02
@@ -119,6 +121,7 @@ class Role(db.Model):
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
 
+
 class Language(db.Model):
     __tablename__ = "t_language"
 
@@ -130,37 +133,34 @@ class Language(db.Model):
 class Product(db.Model):
     __tablename__ = "t_product"
 
-    id = db.Column(db.Integer,primary_key = True)
-    name = db.Column(db.String(64),index = True)
-    language_id = db.Column(db.Integer,db.ForeignKey("t_language.id"),index = True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True)
+    language_id = db.Column(db.Integer, db.ForeignKey("t_language.id"), index=True)
 
-    #产品描述
+    # 产品描述
     description = db.Column(db.String(1024))
 
-    #图片路径
-    picture1_path = db.Column(db.String(256))
-    picture2_path = db.Column(db.String(256))
-    picture3_path = db.Column(db.String(256))
+    # 图片路径
+    imgs_path = db.Column(db.String(1024), comment="图片路径")
 
-    #视频
+    # 视频
     video_path = db.Column(db.String(256))
-    #是否有毕业论文
-    is_doc = db.Column(db.Boolean,default = False,index = True,comment="是否有毕业论文")
-    prices = db.Column(db.FLOAT,default=100.)
-    baidu_url = db.Column(db.String(256),comment = "百度云url")
+
+    # 是否有毕业论文
+    is_doc = db.Column(db.Boolean, default=False, index=True, comment="是否有毕业论文")
+    prices = db.Column(db.FLOAT, default=100.)
+    baidu_url = db.Column(db.String(256), comment="百度云url")
 
     def to_json(self):
         json_product = {
-            "id" : self.id,
-            "name" : self.name,
-            "language_id" : self.language_id,
-            "language" : self.language.name,
-            "description" : self.description,
-            "picture1_path" : self.picture1_path,
-            "picture2_path" : self.picture2_path,
-            "picture3_path" : self.picture3_path,
-            "video_path" : self.video_path,
-            "is_doc" : self.is_doc
+            "id": self.id,
+            "name": self.name,
+            "language_id": self.language_id,
+            "language": self.language.name,
+            "description": self.description,
+            "imgs_path": self.imgs_path.split(";"),
+            "video_path": self.video_path,
+            "is_doc": self.is_doc
         }
         return json_product
 
@@ -173,29 +173,34 @@ class Product(db.Model):
         product.description = json_product.get("description")
         product.video_path = json_product.get("video_path")
         product.is_doc = json_product.get("is_doc")
+        product.imgs_path = ";".join(json_product.imgs_path)
 
         return product
 
     @staticmethod
-    def generate_fake(count = 100):
-        from random import seed,randint
+    def generate_fake(count=100):
+        from random import seed, randint
         import forgery_py
 
         seed()
         for i in range(count):
             p = Product(
-                name = forgery_py.name.full_name(),
-                language_id = randint(1,6),
-                description = forgery_py.lorem_ipsum.paragraph(sentences_quantity=10),
-                picture1_path=forgery_py.lorem_ipsum.sentence(),
-                picture2_path=forgery_py.lorem_ipsum.sentence(),
-                picture3_path=forgery_py.lorem_ipsum.sentence(),
-                video_path = forgery_py.lorem_ipsum.word(),
+                name=forgery_py.name.full_name(),
+                language_id=randint(1, 6),
+                description=forgery_py.lorem_ipsum.paragraph(sentences_quantity=10),
+                video_path=forgery_py.lorem_ipsum.word(),
                 baidu_url=forgery_py.internet.domain_name(),
-                prices=randint(0,2000),
+                prices=randint(0, 2000),
                 is_doc=False
             )
+            # 生成图片路径
+            imgs_path = ""
+            for i in range(10):
+                imgs_path += forgery_py.lorem_ipsum.sentence() + ";"
+            p.imgs_path = imgs_path
+
             db.session.add(p)
+
             try:
                 db.session.commit()
             except:
@@ -223,25 +228,30 @@ class Product(db.Model):
         try:
             db.session.commit()
 
+            # 视频地址
             video_path = "{id}/video.mp4".format(id=product.id)
-            picture1_path = "{id}/img1.png".format(id=product.id)
-            picture2_path = "{id}/img2.png".format(id=product.id)
-            picture3_path = "{id}/img3.png".format(id=product.id)
 
+            # 图片地址
+            imgs_path = []
+            for img in product_form.imgs.data:
+                img_path = "{id}/{name}".format(id=product.id, name=img.filename)
+                imgs_path.append(img_path)
+
+            # 上传文件
             cos.upload_binary_file(binary_file=product_form.video.data,key=video_path)
-            cos.upload_binary_file(binary_file=product_form.img1.data,key=picture1_path)
-            cos.upload_binary_file(binary_file=product_form.img2.data,key=picture2_path)
-            cos.upload_binary_file(binary_file=product_form.img3.data,key=picture3_path)
+            for i, img_path in enumerate(imgs_path):
+                img = product_form.imgs.data[i]
+                cos.upload_binary_file(binary_file=img, key=img_path)
 
-            product.video_path = Config.COS_BUCKET_PATH + "/" + video_path
-            product.picture1_path = Config.COS_BUCKET_PATH + "/" + picture1_path
-            product.picture2_path = Config.COS_BUCKET_PATH + "/" + picture2_path
-            product.picture3_path = Config.COS_BUCKET_PATH + "/" + picture3_path
+            # 数据库保存地址
+            product.video_path = Config.COS_BUCKET_PATH + "/" + video_path  # 视频地址
+            save_imgs_path = map(lambda x: Config.COS_BUCKET_PATH + "/" + x, imgs_path)     # 图片地址
+            product.imgs_path = ";".join(save_imgs_path)
 
             db.session.commit()
         except Exception as e:
+            print(e)
             db.session.rollback()
-
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -251,8 +261,10 @@ class AnonymousUser(AnonymousUserMixin):
     def is_administrator(self):
         return False
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 login_manager.anonymous_user = AnonymousUser

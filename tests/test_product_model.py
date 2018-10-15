@@ -19,7 +19,6 @@ class ProductModelTestCase(unittest.TestCase):
 
         print(self.product.id)
 
-
     def test_product_cn_add(self):
         """
         测试中文插入
@@ -32,12 +31,8 @@ class ProductModelTestCase(unittest.TestCase):
         db.session.commit()
 
     def test_generate_prodoct(self):
-        """
-        生成假数据
-        :return:
-        """
+        """生成假数据"""
         Product.generate_fake(100)
-
 
     def tearDown(self):
         pass
