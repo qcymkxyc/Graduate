@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_tool.html" as share %}
 
 {% block page_content %}
     <div class="page-header" xmlns="http://www.w3.org/1999/html">
@@ -14,6 +15,8 @@
             </div>
             <!--信息-->
             <div class="col-md-4 col-md-offset-1">
+                <!--页面分享-->
+                {{  share.share_page_widget() }}
                 <div class="row">
                     <p style="font-size: medium">
                     以下是大纲或介绍,如需要完整的资料请购买下载. 本资料已审核过,内容保密,格式标准,质量保证.
@@ -142,4 +145,5 @@
             {% endfor %}
         </div>
     </div>
+    {{ share.share_img_widget() }}
 {% endblock %}

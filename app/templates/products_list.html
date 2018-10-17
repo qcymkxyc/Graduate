@@ -42,21 +42,26 @@
                     {% endif %}
                 <div class="col-md-4">
                     <a href = "{{ url_for("products.single_product",id = item.id) }}" class="thumbnail">
-                        <img src="{{ url_for("static",filename = "images/bg.jpg") }}">
+                        <img src="{{ item.imgs_path.split(";")[0] }}">
                     </a>
                     <h3>
                         <a href="{{ url_for("products.single_product",id = item.id) }}">{{ item.name }}</a>
-                        <span class="label label-info">{{ item.language.name }}</span>
+                        {{ macros.language_label_widget(item.language) }}
                     </h3>
-                    <p class="text-info">{{ item.description }}</p>
+                    <p class="text-info" style="overflow: hidden; text-overflow:ellipsis;white-space:nowrap;">{{ item.description }}</p>
                 </div>
                     {% if loop.index0 % 3 == 2 %}
                         </div>
                     {% endif %}
                 {% endfor %}
-        <div class="pagination text-center">
-        {{ macros.pagination_widget(pagination,".find_products") }}
+
+        <!--分页-->
+        <div class="col-md-offset-3">
+            <div class="pagination" >
+            {{ macros.pagination_widget(pagination,".find_products") }}
+            </div>
         </div>
+
         </div>
     {% endblock %}
 {% endblock %}

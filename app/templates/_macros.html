@@ -32,3 +32,9 @@
 </ul>
 </nav>
 {% endmacro %}
+
+{% set label_class = ["label-default","label-primary","label-success","label-info","label-warning","label-danger"] %}
+{% set label_len = 6 %}
+{% macro language_label_widget(language)%}
+    <span class="label {{   label_class[language.id % label_len] }}">{{ language.name }}</span>
+{% endmacro %}

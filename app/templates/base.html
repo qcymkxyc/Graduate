@@ -1,4 +1,5 @@
 {% extends "bootstrap/base.html" %}
+{% import "_tool.html" as tool %}
 
 {% block title %}易帮计算机毕业设计{% endblock %}
 
@@ -55,6 +56,9 @@
 {% block page_content %}{% endblock %}
 </div>
 {% endblock %}
+
+<!--网站统计-->
+{{ tool.page_statistics() }}
 
 {% block scripts %}
     {{ super() }}
