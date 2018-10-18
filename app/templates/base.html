@@ -5,6 +5,11 @@
 
 {% block head %}
 {{ super() }}
+<link rel="icon" href="{{ url_for("static",filename="favicon.ico")}}" type="image/x-icon"/>
+<link rel="shortcut icon" href="{{ url_for("static",filename="favicon.ico")}}" type="image/x-icon">
+<meta name="description" content="易帮计算机毕业设计网,提供完整的计算机毕业设计、
+                计算机专业毕业设计、网站类毕业设计服务的网站,主要包括php,java,asp.net,安卓,ios,html5等成品,
+                是大学毕业生不可或缺的学习资料参考专业网站。。">
 {% endblock %}
 
 {% block navbar %}

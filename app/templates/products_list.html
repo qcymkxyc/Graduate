@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% import "_macros.html" as macros %}
 {% block title %}{% if pagination.page != 1 %} 第{{ pagination.page }}页-{% endif %}毕业设计列表-易帮计算机毕业设计{% endblock %}
+{% block head %}
+    {{ super() }}
+    <meta name="keywords" content="计算机毕业设计成品,计算机毕业设计下载,java毕设,计算机毕业设计">
+
+{% endblock %}
 
 {% block content %}
     {% block page_header %}
