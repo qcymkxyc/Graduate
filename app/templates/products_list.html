@@ -41,11 +41,11 @@
                         <div class="row">
                     {% endif %}
                 <div class="col-md-4">
-                    <a href = "{{ url_for("products.single_product",id = item.id) }}" class="thumbnail">
+                    <a href = "{{ url_for("products.single_product",id = item.id) }}" target="_blank" class="thumbnail">
                         <img src="{{ item.imgs_path.split(";")[0] }}">
                     </a>
                     <h3>
-                        <a href="{{ url_for("products.single_product",id = item.id) }}">{{ item.name }}</a>
+                        <a href="{{ url_for("products.single_product",id = item.id) }}" target="_blank">{{ item.name }}</a>
                         {{ macros.language_label_widget(item.language) }}
                     </h3>
                     <p class="text-info" style="overflow: hidden; text-overflow:ellipsis;white-space:nowrap;">{{ item.description }}</p>

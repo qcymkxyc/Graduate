@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
             <div class="page-header" align="center">
-                <h1>易帮计算机毕业设计—计算机毕业设计一站式服务</h1>
+                <h1>易帮计算机毕业设计—高质量计算机毕业设计服务</h1>
                 <h1><small>Computer Graduation Design Profession Provider</small></h1>
                 <div style="padding: 30px"></div>
             </div>
@@ -31,34 +31,6 @@
         </div>
     </div>
 {% endblock %}
-{% block scripts %}
-<script type="text/javascript">
-    $(this).css("background-image","url(static/images/bg.jpg)");
-
-    function search_product() {
-        /**
-         * 根据商品名查找商品
-         *
-         * @param search_name:查找字段
-         */
-        var search_name = $("#search_name").val()
-
-        $.ajax({
-            type : "GET",
-            url : "api/v1/find_product",
-            dataType : "json",
-            data : {
-                page : 1,
-                limit : 10,
-                search_name : search_name,
-                language_id : -1
-            },
-            success : {
-
-            }
-        })
-    }
-</script>
 
 <script>
 var _hmt = _hmt || [];

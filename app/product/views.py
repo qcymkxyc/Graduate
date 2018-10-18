@@ -21,22 +21,20 @@ def list_product():
 @product_blueprint.route("/find_products", methods=["GET", "POST"])
 def find_products():
     page = request.args.get(key="page", default=1, type=int)
-    limit= request.args.get(key="limit", default=12, type=int)
+    limit = request.args.get(key="limit", default=12, type=int)
     search_name = request.args.get(key="name", default="")
 
     filters = dict()
     filters["language_id"] = request.args.get(key="product_language", type=int, default=-1)
 
-    paginate = (Product.query.filter(
-                    Product.name.like("%" + search_name + "%"),
-                    ).
-                    filter(*filters).
-                    order_by("id").
-                    paginate(page = page,per_page=limit))
+    paginate = (Product.query.filter(Product.name.like("%" + search_name + "%")).
+                filter_by(**filters).
+                order_by("id").
+                paginate(page=page, per_page=limit)
+                )
 
     items = paginate.items
-
-    return render_template("products_list.html",items = items,pagination= paginate)
+    return render_template("products_list.html", items=items, pagination=paginate)
 
 
 @product_blueprint.route("/custom", methods=["GET"])
