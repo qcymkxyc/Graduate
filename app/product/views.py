@@ -24,9 +24,12 @@ def find_products():
     limit = request.args.get(key="limit", default=12, type=int)
     search_name = request.args.get(key="name", default="")
 
+    # 过滤器
     filters = dict()
     filters["language_id"] = request.args.get(key="product_language", type=int, default=-1)
+    filters = {k: v for k, v in filters.items() if v != -1}
 
+    # 分页查询
     paginate = (Product.query.filter(Product.name.like("%" + search_name + "%")).
                 filter_by(**filters).
                 order_by("id").
@@ -34,7 +37,8 @@ def find_products():
                 )
 
     items = paginate.items
-    return render_template("products_list.html", items=items, pagination=paginate)
+    return render_template("products_list.html", items=items, pagination=paginate,
+                           search_name=search_name, filter=filters)
 
 
 @product_blueprint.route("/custom", methods=["GET"])
