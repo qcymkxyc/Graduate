@@ -38,6 +38,7 @@ class Config(object):
     def init_app(app):
         pass
 
+
 class DevelopementConfig(Config):
 
     DEBUG = True
@@ -55,10 +56,8 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{0}:{1}@{2}/{3}".format(username, pw, host, database)
 
 
-
 class ProductConfig(Config):
     SQLALCHEMY_DATABASE_URL = "mysql+pymysql://{0}:{1}@{2}/{3}".format(username, pw, host, database)
-
 
 
 config = {

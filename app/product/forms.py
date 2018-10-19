@@ -43,9 +43,9 @@ class ProductAddForm(Form):
 
 
 class ProductFindForm(Form):
-    name = StringField(label="商品名")
+    search_name = StringField(label="商品名")
     language = SelectField(
-        label = "语言",
+        label="语言",
         coerce=int
     )
     have_doc = SelectField(
