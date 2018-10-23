@@ -23,8 +23,6 @@ def find_products():
     page = request.args.get(key="page", default=1, type=int)
     limit = request.args.get(key="limit", default=12, type=int)
     search_name = request.args.get(key="search_name", default="")
-    print(request.args)
-    print(search_name, page)
 
     # 过滤器
     filters = dict()

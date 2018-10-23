@@ -49,7 +49,7 @@
                     {% endif %}
                 <div class="col-md-4">
                     <a href = "{{ url_for("products.single_product",id = item.id) }}" target="_blank" class="thumbnail">
-                        <img src="{{ item.imgs_path.split(";")[0] }}">
+                        <img src="{% if item.imgs_path %} {{ item.imgs_path.split(";")[0] }} {% endif %}">
                     </a>
                     <h3>
                         <a href="{{ url_for("products.single_product",id = item.id) }}" target="_blank">{{ item.name }}</a>

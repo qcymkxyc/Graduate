@@ -11,7 +11,7 @@
             <!--图片展示-->
             <div class="col-md-7">
                 <div class="thumbnail">
-                <img src="{{ product.imgs_path.split(";")[0] }}" >
+                <img src="{% if product.imgs_path %}{{ product.imgs_path.split(";")[0] }} {% endif %}" >
                 </div>
             </div>
             <!--信息-->
@@ -141,9 +141,11 @@
         <div class="row">
             <h1 class="text-left">资料图片</h1>
             <br>
+            {% if product.imgs_path %}
             {% for img_path in product.imgs_path.split(";") %}
             <img src="{{ img_path }}" class="thumbnail">
             {% endfor %}
+            {% endif %}
         </div>
     </div>
     {{ share.share_img_widget() }}
