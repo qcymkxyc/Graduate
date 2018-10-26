@@ -142,9 +142,10 @@
             <h1 class="text-left">资料图片</h1>
             <br>
             {% if product.imgs_path %}
-            {% for img_path in product.imgs_path.split(";") %}
-            <img src="{{ img_path }}" class="thumbnail">
-            {% endfor %}
+                {% for img_path in product.imgs_path.split(";") %}
+                    <!--添加数据万象水印-->
+                    {{ share.water_marker(img_path) }}
+                {% endfor %}
             {% endif %}
         </div>
     </div>

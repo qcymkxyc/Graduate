@@ -2,6 +2,7 @@ from flask import jsonify,request
 from ..models import Product
 from . import api
 
+
 @api.route("/products")
 def get_products():
     page = request.args.get(key = "page",default = 1,type = int)
@@ -17,9 +18,11 @@ def get_products():
         "code" : 0
     })
 
+
 @api.route("new_products")
 def new_product():
     pass
+
 
 @api.route("find_product")
 def find_product():

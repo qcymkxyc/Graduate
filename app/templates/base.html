@@ -13,32 +13,24 @@
 {% endblock %}
 
 {% block navbar %}
-    <div class="container">
+    <div class="container-fluid">
     <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
       <a class="navbar-brand" href="#">
           <img alt="易帮计算机毕业设计" src="{{ url_for('static',filename='images/易帮32x32.png')}}">
       </a>
+      <a class="navbar-brand" href="#">易帮计算机毕设</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-          <p class="navbar-text" style="font: bold">易帮计算机毕设</pi>
-      </ul>
       <ul class="nav navbar-nav navbar-right">
           <li><a href="/">首页</a></li>
           <li><a href="{{ url_for("products.find_products", product_language=1) }}">JAVA/JSP</a></li>
           <li><a href="{{ url_for("products.find_products", product_language=2) }}">C#/.NET</a></li>
-          <li><a href="{{ url_for("products.custom") }}" style="color: red;font: bold">毕业设计订做</a></li>
+          <li><a href="{{ url_for("products.custom") }}"><b class="text-danger">毕业设计订做</b></a></li>
           <li><a href="{{ url_for("products.find_products", product_language=4) }}">C语言</a></li>
           <li><a href="{{ url_for("products.find_products", product_language=3) }}">PHP</a></li>
           <li><a href="{{ url_for("products.find_products", product_language=5) }}">Python</a></li>

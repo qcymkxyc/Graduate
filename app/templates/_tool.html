@@ -88,3 +88,12 @@ var _hmt = _hmt || [];
 })();
 </script>
 {% endmacro %}
+
+
+<!--添加数据万象水印-->
+{% macro water_marker(img_url) %}
+    {% set watermarker_str = "watermark/2/text/5piT5biu6K6h566X5py65q-V5Lia6K6-6K6h572R/font/bXN5a
+    GJkLnR0Zg/fontsize/48/fill/IzMzMzMzMw/dissolve/79/gravity/north/dx/20/dy/20" %}
+    {% set img_url = (img_url + "?" + watermarker_str) %}
+    <img src="{{ img_url|picc }}" class="thumbnail">
+{% endmacro %}

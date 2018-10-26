@@ -21,6 +21,7 @@ login_manager = LoginManager()
 login_manager.session_protection = "strong"
 login_manager.login_view = "auth.login"
 
+# 文件上传组件
 products_images = UploadSet("image", IMAGES,)
 products_video = UploadSet("video", ("flv", "mp4"))
 
@@ -38,7 +39,6 @@ def create_app(config_name="default"):
     :param config_name: 配置名
     :return: 应用
     """
-
     app = Flask(__name__)
     app.config.from_object(conf.config[config_name])
     conf.config[config_name].init_app(app)
@@ -49,9 +49,16 @@ def create_app(config_name="default"):
     moment.init_app(app)
     login_manager.init_app(app)
 
+    # flask-upload
     configure_uploads(app, products_images)
     configure_uploads(app, products_video)
 
+    # jinja2
+    from app.product import filter
+    jinja_env = app.jinja_env
+    jinja_env.filters["picc"] = filter.cos_picc_filter  # 数据万象的过滤器
+
+    # 蓝图配置
     from .main import main
     app.register_blueprint(main)
     from .auth import auth

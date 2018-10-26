@@ -52,6 +52,7 @@ def edit_profile():
 
 @main_blueprint.route("/baidu_verify_L2SVVu2dc7.html", methods=["GET"])
 def baidu_vertify():
+    """该路径用于百度统计"""
     return render_template("baidu_verify_L2SVVu2dc7.html")
 
 

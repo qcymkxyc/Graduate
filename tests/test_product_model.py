@@ -1,6 +1,7 @@
 import unittest
 from app.models import Product
-from app import db,create_app
+from app import db, create_app
+
 
 class ProductModelTestCase(unittest.TestCase):
     def setUp(self):
