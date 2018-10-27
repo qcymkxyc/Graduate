@@ -12,10 +12,17 @@
 import unittest
 from app.models import User
 from app import db
+from app import create_app
+
 
 class UserModelTestCase(unittest.TestCase):
     """测试用户Model"""
     def setUp(self):
+        self.app = create_app("testing")
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all()
+
         self.user = User()
         self.user.password = "cat"
 
@@ -37,9 +44,13 @@ class UserModelTestCase(unittest.TestCase):
         db.session.add(self.user)
         db.session.commit()
 
+    def test_password_change(self):
+        user = User.query.filter_by(email="qcymkxyc@163.com").first()
+        user.password = "123456"
+        db.session.commit()
 
     def test_password_hash(self):
-        u2 = User(password = "dog")
+        u2 = User(password="dog")
         self.assertNotEqual(self.user.hash_password,u2.hash_password)
 
 

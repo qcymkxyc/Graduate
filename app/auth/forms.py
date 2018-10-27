@@ -9,23 +9,24 @@
  @Software: PyCharm
     
 """
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField,PasswordField,BooleanField,SubmitField,ValidationError
-from wtforms.validators import Required,Length,Email,EqualTo,DataRequired
+from wtforms.validators import Length,Email,EqualTo,DataRequired
 from ..models import User
 
-class LoginForm(Form):
-    email = StringField("Email",validators = [Required(),Length(1,64),Email()])
-    password = PasswordField("Password",validators = [Required()])
+
+class LoginForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired(), Length(1, 64), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
     remember_me = BooleanField("keep me logged in")
     submit = SubmitField("Log in")
 
 
-class RegistrationForm(Form):
-    email = StringField("Email",validators=[Required(),Length(1,64),Email()])
-    username = StringField("Username",validators=[Required(),Length(1,64)])
-    password2 = PasswordField("Confirm Password", validators=[Required()])
-    password = PasswordField("Password",validators=[Required(),EqualTo('password2',"Password must match")])
+class RegistrationForm(FlaskForm):
+    email = StringField("Email",validators=[DataRequired(),Length(1,64),Email()])
+    username = StringField("Username",validators=[DataRequired(),Length(1,64)])
+    password2 = PasswordField("Confirm Password", validators=[DataRequired()])
+    password = PasswordField("Password",validators=[DataRequired(),EqualTo('password2',"Password must match")])
     submit = SubmitField("Register")
 
     def validate_email(self,field):
@@ -37,10 +38,10 @@ class RegistrationForm(Form):
             raise ValidationError("Username already in use.")
 
 
-class ChangePasswordForm(Form):
-    old_password = PasswordField("Your Old Password",validators = [Required()])
-    password = PasswordField("New Password",validators = [Required(),EqualTo("password2","Password must match")])
-    password2 = PasswordField("Confirm New Password",validators = [Required()])
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField("Your Old Password",validators = [DataRequired()])
+    password = PasswordField("New Password",validators = [DataRequired(),EqualTo("password2","Password must match")])
+    password2 = PasswordField("Confirm New Password",validators = [DataRequired()])
 
     submit = SubmitField("Update Password")
 

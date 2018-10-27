@@ -17,6 +17,7 @@ database = "graduate"
 class Config(object):
 
     SECRET_KEY = os.environ.get("SECRET_KEY") or "hard to guess string"
+    ThRADED = True
 
     MAIL_SUBJECT_PREFIX = '[易帮计算机毕业设计]'
     MAIL_SENDER = "yibangbishe@163.com"
@@ -59,7 +60,7 @@ class TestingConfig(Config):
 class ProductConfig(Config):
 
     MAIL_SERVER = "smtp.163.com"
-    MAIL_PORT = 25
+    MAIL_PORT = 465
     MAIL_USE_SSL = True
     MAIL_USERNAME = "yibangbishe@163.com"
     MAIL_PASSWORD = "68415843gG"
@@ -79,7 +80,7 @@ class ProductConfig(Config):
             if getattr(cls, "MAIL_USE_SSL", None):
                 secure = ()
         mail_handler = SMTPHandler(
-            mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
+            mailhost=cls.MAIL_SERVER,
             fromaddr=cls.MAIL_SENDER,
             toaddrs=[cls.ADMIN],
             subject=cls.MAIL_SUBJECT_PREFIX + " Application Error",

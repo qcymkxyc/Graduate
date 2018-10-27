@@ -33,7 +33,7 @@ cos_config = CosConfig(
 cos_client = CosS3Client(cos_config)
 
 
-def create_app(config_name="default"):
+def create_app(config_name):
     """
     工厂类，创建应用
     :param config_name: 配置名

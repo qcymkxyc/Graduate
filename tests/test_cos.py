@@ -10,7 +10,7 @@ class COSTestCase(unittest.TestCase):
         """
         腾讯云cos上传测试
         """
-        cos.upload_binary_file(b"abcde","test.txt")
+        cos.upload_binary_file(b"abcde","login_success.txt")
 
 
 

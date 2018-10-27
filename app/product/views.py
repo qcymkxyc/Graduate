@@ -9,13 +9,13 @@ def new_product():
     form = ProductAddForm()
     if form.validate_on_submit():
         Product.upload_product(form)
-        return render_template("products/add_products.html", form=form)
-    return render_template("products/add_products.html", form=form)
+        return render_template("admin/products/add_products.html", form=form)
+    return render_template("admin/products/add_products.html", form=form)
 
 
 @product_blueprint.route("/list_products", methods=["GET"])
 def list_product():
-    return render_template("products/list_products.html",)
+    return render_template("admin/products/list_products.html", )
 
 
 @product_blueprint.route("/find_products", methods=["GET", "POST"])

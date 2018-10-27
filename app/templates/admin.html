@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>layout 后台大布局 - Layui</title>
+    <title>易帮计算机毕业设计网 - 后台管理系统</title>
     <link  href="{{ url_for("static",filename="layui/css/layui.css") }}"  rel = "stylesheet" type="text/css">
 </head>
 <body class="layui-layout-body">
@@ -12,8 +12,8 @@
     <div class="layui-logo">易帮毕设 - 后台管理</div>
     <!-- 头部区域（可配合layui已有的水平导航） -->
     <ul class="layui-nav layui-layout-left">
-      <li class="layui-nav-item"><a href="">控制台</a></li>
-      <li class="layui-nav-item"><a href="">商品管理</a></li>
+      <li class="layui-nav-item"><a href="">控制台首页</a></li>
+      <li class="layui-nav-item"><a target="_blank" href="{{ url_for("main.index") }}">前台首页</a></li>
       <li class="layui-nav-item"><a href="">用户</a></li>
       <li class="layui-nav-item">
         <a href="javascript:;">其它系统</a>
@@ -27,15 +27,15 @@
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
         <a href="javascript:;">
-          <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-          贤心
+          <img src={{ current_user.gravatar(size=256) }} class="layui-nav-img">
+          {{ current_user.name }}
         </a>
         <dl class="layui-nav-child">
           <dd><a href="">基本资料</a></dd>
           <dd><a href="">安全设置</a></dd>
         </dl>
       </li>
-      <li class="layui-nav-item"><a href="">退了</a></li>
+      <li class="layui-nav-item"><a href="{{ url_for("auth.logout") }}">退了</a></li>
     </ul>
   </div>
 
@@ -44,7 +44,10 @@
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
         <li class="layui-nav-item layui-nav-itemed">
-          <a class="" href="javascript:;">会员管理</a>
+          <a class="" href="javascript:;">
+              <i class="layui-icon layui-icon-user"></i>
+              会员管理
+          </a>
           <dl class="layui-nav-child">
             <dd><a onclick="laod_content()">会员列表</a></dd>
             <dd><a href="javascript:;">权限列表</a></dd>
@@ -53,7 +56,10 @@
           </dl>
         </li>
         <li class="layui-nav-item">
-          <a href="javascript:;">商品管理</a>
+          <a href="javascript:;">
+              <i class="layui-icon layui-icon-cart"></i>
+              商品管理
+          </a>
           <dl class="layui-nav-child">
             <dd><a onclick="laod_content('products/list_products')">商品列表</a></dd>
             <dd><a href="">语言列表</a></dd>
@@ -61,8 +67,36 @@
             <dd><a onclick="laod_content('products/find_products')">查找商品</a></dd>
           </dl>
         </li>
-        <li class="layui-nav-item"><a href="">云市场</a></li>
-        <li class="layui-nav-item"><a href="">发布商品</a></li>
+        <li class="layui-nav-item">
+            <a href="">
+            <i class="layui-icon layui-icon-survey"></i>
+            日志管理
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="">
+                <i class="layui-icon layui-icon-release"></i>
+                邮件管理
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="">
+                <i class="layui-icon layui-icon-upload-circle"></i>
+                发布商品
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="">
+                <i class="layui-icon layui-icon-chart-screen"></i>
+                订做服务
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="">
+                <i class="layui-icon layui-icon-component"></i>
+                脚本及工具
+            </a>
+        </li>
       </ul>
     </div>
   </div>
@@ -74,7 +108,7 @@
 
   <div class="layui-footer">
     <!-- 底部固定区域 -->
-    © layui.com - 底部固定区域
+    © www.yibangbishe.com.cn - 易帮计算机毕业设计网
   </div>
 </div>
 <!-- Script区域-->

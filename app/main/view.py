@@ -11,6 +11,7 @@ from ..product.forms import ProductFindForm
 
 
 @main_blueprint.route("/admin")
+@login_required
 def admin():
     return render_template("admin.html")
 
@@ -23,10 +24,10 @@ def index():
 
 @main_blueprint.route("/user/<username>")
 def user(username):
-    user = User.query.filter_by(name=username).first()
-    if user is None:
+    search_user = User.query.filter_by(name=username).first()
+    if search_user is None:
         abort(404)
-    return render_template("user.html", user=user)
+    return render_template("user.html", user=search_user)
 
 
 @main_blueprint.route("/edit_profile", methods=["GET", "POST"])
@@ -61,5 +62,3 @@ def baidu_vertify():
 # # @ad
 # def edit_profile_admin(id):
 #     user = User.query.get
-
-

@@ -2,11 +2,11 @@
 # coding=utf-8
 
 import hashlib
-from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import UserMixin,AnonymousUserMixin
-from . import login_manager,db
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin, AnonymousUserMixin
+from . import login_manager, db
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app,request
+from flask import current_app
 from datetime import datetime
 
 from app.util import cos
@@ -30,9 +30,9 @@ class User(db.Model,UserMixin):
     confirmed = db.Column(db.Boolean,default = False)
 
     def __init__(self,**kwargs):
-        super(User,self).__init__(**kwargs)
+        super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.email == current_app.config["FLASKY_ADMIN"]:
+            if self.email == current_app.config["ADMIN"]:
                 self.role = Role.query.filter_by(permission = 0xff).first()
             if self.role is None:
                 self.role = Role.query.filter_by(default = True).first()
