@@ -9,40 +9,32 @@
 
 {% block content %}
     {% block page_header %}
+        <!--搜索表单-->
         <div class="container">
-            <div class="col-md-4">
-            <form action="find_products"">
-                <div class="form-group form-inline has-feedback has-success">
-                    <label class="control-label">项目名:</label>
-                    <input class="form-control" type="text" name="search_name">
+            <div class="row">
+            <form>
+                <div class="form-group col-md-4 has-feedback has-success">
+                    {{ form.search_name.label(class="control-label") }}{{ form.search_name(class="form-control") }}
                 </div>
-                <div class="form-group form-inline has-success">
-                    <label class="control-label">语言：</label>
-                    <select class="form-control" name="product_language">
-                        <option value="-1" checked>无限制</option>
-                        <option value="1">JAVA</option>
-                        <option value="2">C#</option>
-                        <option value="3">PHP</option>
-                        <option value="4">C</option>
-                        <option value="5">Python</option>
-                        <option value="6">其它</option>
-                    </select>
+                <div class="form-group col-md-2 has-success">
+                    {{ form.language.label(class="control-label") }}{{ form.language(class="form-control") }}
                 </div>
-                <div class="form-group ">
-                    <button type="submit" class="btn btn-success">搜索</button>
+                <div class="form-group col-md-4 has-success">
+                    <div style="padding: 12px"></div>
+                    <button type="submit" class="btn btn-default ">搜索</button>
                     <button type="reset" class="btn btn-danger">重置</button>
                 </div>
             </form>
             </div>
         </div>
         <div style="padding: 15px">
-
+        <Hr class="divider">
+        <div style="padding: 15px">
         </div>
     {% endblock %}
 
     {% block page_content %}
         <div class="container">
-
                 {% for item in items %}
                     {% if loop.index0 % 3 == 0 %}
                         <div class="row">

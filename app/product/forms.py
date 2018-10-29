@@ -1,9 +1,9 @@
 from flask_wtf import Form
-from wtforms import SubmitField,StringField,TextAreaField,SelectField,RadioField,IntegerField,MultipleFileField
-from wtforms.validators import DataRequired,NumberRange,URL
-from flask_wtf.file import FileField,FileAllowed
+from wtforms import SubmitField, StringField, TextAreaField, SelectField, RadioField, IntegerField, MultipleFileField
+from wtforms.validators import DataRequired, NumberRange
+from flask_wtf.file import FileField, FileAllowed
 from ..models import Language
-from .. import products_video,products_images
+from .. import products_video, products_images
 
 
 class ProductAddForm(Form):
@@ -16,72 +16,32 @@ class ProductAddForm(Form):
     ])
     have_doc = RadioField(
         label="是否有论文",
-        choices=[
-            (True, "是"),
-            (False, "否")
-        ],
+        choices=[(True, "是"), (False, "否")],
         coerce=bool,
         default=False
     )
     price = IntegerField(
         label="价格",
-        validators=[
-            NumberRange(min=0, max=2000, message="价格必须在0 - 2000之间")
-        ]
+        validators=[NumberRange(min=0, max=2000, message="价格必须在0 - 2000之间")]
     )
-    baidu_url = StringField(
-        label="百度URL",
-        validators=[
-            URL(message = "字段必须为URL")
-        ]
-    )
+    baidu_url = StringField(label="百度URL")
     submit = SubmitField("提交")
 
     def __init__(self):
-        super(ProductAddForm,self).__init__()
-        self.language.choices = [(single_language.id,single_language.name) for single_language in Language.query.all()]
+        super(ProductAddForm, self).__init__()
+        self.language.choices = [(single_language.id, single_language.name) for single_language in Language.query.all()]
 
 
 class ProductFindForm(Form):
     search_name = StringField(label="商品名")
-    language = SelectField(
-        label="语言",
-        coerce=int
-    )
-    have_doc = SelectField(
-        label = "是否有论文",
-        choices = [
-            (-1,"无限制"),
-            (1,"是"),
-            (0,"否")
-        ],
-        default = -1,
-        coerce=int
-    )
-    have_img = SelectField(
-        label = "是否有图片",
-        choices=[
-            (-1,"无限制"),
-            (1,"是"),
-            (0,"否")
-        ],
-        default=-1,
-        coerce=int
-    )
-    have_video = SelectField(
-        label = "是否有视频",
-        choices=[
-            (-1,"无限制"),
-            (1,"是"),
-            (0,"否")
-        ],
-        default=-1,
-        coerce=int
-    )
+    language = SelectField(label="语言", coerce=int)
+    have_doc = SelectField(label="是否有论文", choices=[(-1, "无限制"), (1, "是"), (0, "否")], default=-1, coerce=int)
+    have_img = SelectField(label="是否有图片", choices=[(-1, "无限制"), (1, "是"), (0, "否")], default=-1, coerce=int)
+    have_video = SelectField(label="是否有视频", choices=[(-1, "无限制"), (1, "是"), (0, "否")], default=-1, coerce=int)
 
     submit = SubmitField("查询")
 
     def __init__(self):
         super(ProductFindForm, self).__init__()
         self.language.choices = [(single_language.id, single_language.name) for single_language in Language.query.all()]
-
+        self.language.choices.insert(0, (-1, "无限制"))

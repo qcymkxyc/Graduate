@@ -2,7 +2,7 @@
 # coding=utf-8
 
 from . import main as main_blueprint
-from flask import render_template, abort, flash, redirect, url_for
+from flask import render_template, abort, flash, redirect, url_for, send_from_directory, current_app
 from flask_login import current_user, login_required
 from ..models import User
 from .form import EditProfileForm
@@ -51,14 +51,11 @@ def edit_profile():
     return render_template("edit_profile.html", form=form)
 
 
-@main_blueprint.route("/baidu_verify_L2SVVu2dc7.html", methods=["GET"])
-def baidu_vertify():
-    """该路径用于百度统计"""
-    return render_template("baidu_verify_L2SVVu2dc7.html")
+@main_blueprint.route("/<filename>")
+def static_from_root(filename):
+    """静态文件请求
 
-
-# @main_blueprint.route("/edit-profile/<int:id>")
-# @login_required
-# # @ad
-# def edit_profile_admin(id):
-#     user = User.query.get
+    :param filename: str
+        文件名
+    """
+    return send_from_directory(current_app.static_folder, filename)

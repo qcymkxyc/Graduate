@@ -1,7 +1,7 @@
 from . import product_blueprint
 from flask import render_template, request
 from ..models import Product
-from .forms import ProductAddForm
+from .forms import ProductAddForm, ProductFindForm
 
 
 @product_blueprint.route("/new_product", methods=["GET", "POST"])
@@ -20,6 +20,7 @@ def list_product():
 
 @product_blueprint.route("/find_products", methods=["GET", "POST"])
 def find_products():
+    form = ProductFindForm()
     page = request.args.get(key="page", default=1, type=int)
     limit = request.args.get(key="limit", default=12, type=int)
     search_name = request.args.get(key="search_name", default="")
@@ -38,7 +39,7 @@ def find_products():
 
     items = paginate.items
     return render_template("products_list.html", items=items, pagination=paginate,
-                           search_name=search_name, filter=filters)
+                           search_name=search_name, filter=filters, form=form)
 
 
 @product_blueprint.route("/custom", methods=["GET"])
