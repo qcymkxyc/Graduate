@@ -4,7 +4,7 @@ import zipfile
 import argparse
 import json
 
-description_filename = "descrition.txt"     # 描述的文件名
+description_filename = "description.txt"     # 描述的文件名
 baidu_url_filename = "baidu.txt"    # 百度网盘分享存储文件名
 images_foldername = "images"      # 图片文件夹
 product_info_filename = "product_info.json"     # 保存产品信息
@@ -283,10 +283,10 @@ def main():
 
 
 if __name__ == "__main__":
-    s = r"F:\mystyle\working\\成品整理\\001ASP.NET学生管理系统3.0版"
+    s = r"F:\mystyle\working\成品整理\007ASP.NET教师工资管理系统"
     # process_product_info(s)
     # main("F:\mystyle\working\\成品整理\\")
     # print(os.getcwd())
-    # process_all_product_info(r"F:\mystyle\working\\成品整理")
+    process_all_product_info(r"F:\mystyle\working\\成品整理")
     # pre_process(s)
-    main()
+    # main()
