@@ -1,6 +1,8 @@
 # coding=utf-8
 import os
 import zipfile
+import argparse
+import json
 
 description_filename = "descrition.txt"     # 描述的文件名
 baidu_url_filename = "baidu.txt"    # 百度网盘分享存储文件名
@@ -55,8 +57,7 @@ def write_file(filename, info_dict):
     if not isinstance(info_dict, dict):
         raise TypeError("写入信息必须为字典类型")
     with open(filename, "w", encoding="utf-8") as f:
-        for k, v in info_dict.items():
-            f.write("{key} : {value}\n".format(key=k, value=v))
+        json.dump(info_dict,fp=f,indent=4,ensure_ascii=False)
 
 
 # 获取项目名
@@ -265,7 +266,21 @@ def process_all_product_info(base_path=None):
 
 
 def zip_product(product_name):
+    """
+
+    :param product_name:
+    :return:
+    """
     pass
+
+
+def main():
+    # parse = argparse.ArgumentParser(description="项目信息提取命令行工具")
+    # parse.add_argument("extract-info",help="提取文件信息")
+    # parse.parse_args()
+    s = "/home/qcymkxyc/log/001ASP.NET学生管理系统3.0版"
+    process_product_info(s)
+
 
 if __name__ == "__main__":
     s = r"F:\mystyle\working\\成品整理\\001ASP.NET学生管理系统3.0版"
@@ -273,4 +288,5 @@ if __name__ == "__main__":
     # main("F:\mystyle\working\\成品整理\\")
     # print(os.getcwd())
     # process_all_product_info(r"F:\mystyle\working\\成品整理")
-    pre_process(s)
+    # pre_process(s)
+    main()

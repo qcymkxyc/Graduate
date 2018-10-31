@@ -5,6 +5,7 @@
 
 {% block head %}
 {{ super() }}
+    <script type="text/javascript" src="{{ url_for("static", filename="js/monitor.js") }}"></script>
 <link rel="icon" href="{{ url_for("static",filename="favicon.ico")}}" type="image/x-icon"/>
 <link rel="shortcut icon" href="{{ url_for("static",filename="favicon.ico")}}" type="image/x-icon">
 <meta name="description" content="易帮计算机毕业设计网,提供完整的计算机毕业设计、
@@ -60,8 +61,6 @@
 </div>
 {% endblock %}
 
-<!--网站统计-->
-{{ tool.page_statistics() }}
 
 {% block scripts %}
     {{ super() }}
