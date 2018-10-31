@@ -16,13 +16,13 @@ import json
 import os
 import sys
 
-description_filename = "descrition.txt"     # 描述的文件名
+description_filename = "description.txt"     # 描述的文件名
 baidu_url_filename = "baidu.txt"    # 百度网盘分享存储文件名
 images_foldername = "images"      # 图片文件夹
 product_info_filename = "product_info.json"     # 保存产品信息
 
-# upload_product_url = "www.yibangbishe.com.cn:8080/api/v1/new_product"   # 文件上传URL
-upload_product_url = "http://localhost:5000/api/v1/new_product"   # 文件上传URL
+upload_product_url = "www.yibangbishe.com.cn:8080/api/v1/new_product"   # 文件上传URL
+# upload_product_url = "http://localhost:5000/api/v1/new_product"   # 文件上传URL
 
 
 def read_file(filename, mode="r"):
@@ -57,6 +57,8 @@ def upload_product(product_path):
     # 产品信息
     product_info = read_file(product_info_abs_filename)
     product_info = json.loads(product_info)
+    description = read_file(os.path.join(product_path, description_filename))
+    product_info["description"] = description
 
     # 取出上传文件
     files = [("imgs", open(img_path, "rb")) for img_path in product_info["imgs"]]
@@ -75,7 +77,7 @@ def upload_product(product_path):
 
 
 def main():
-    s = "/home/qcymkxyc/log/001ASP.NET学生管理系统3.0版"
+    s = r"F:\mystyle\working\成品整理\001ASP.NET学生信息管理系统经典版"
     upload_product(s)
 
 
