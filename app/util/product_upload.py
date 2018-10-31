@@ -60,13 +60,18 @@ def upload_product(product_path):
 
     # 取出上传文件
     files = [("imgs", open(img_path, "rb")) for img_path in product_info["imgs"]]
-    files.append(("video", open(product_info["video"], "rb")))
+    files.append(("video",open(product_info["video"], "rb")))
+    product_info.pop("imgs")
+    product_info.pop("video")
 
     response = requests.post(upload_product_url, product_info, files=files)
-    if response.status_code == 200 and json.loads(response.text)["msg"] == "success":
+    print(response.text)
+    res_dict = json.loads(response.text)
+    if response.status_code == 200 and res_dict["msg"] == "success":
         print("{name}上传成功".format(name=product_info["name"]))
     else:
         print("{name}上传失败！".format(name=product_info.get("name")), file=sys.stderr)
+        print("失败原因:{reason}".format(reason=res_dict["reason"]))
 
 
 def main():

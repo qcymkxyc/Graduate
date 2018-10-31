@@ -8,11 +8,6 @@ import os
 import logging
 import logging.config
 
-username = "root"
-pw = "123456"
-host = "47.94.80.98"
-database = "graduate"
-
 
 class Config(object):
 
@@ -39,33 +34,44 @@ class Config(object):
     # 生成的Bucket基路径
     COS_BUCKET_PATH = "https://{bucket}.cos.{region}.myqcloud.com".format(bucket=COS_BUCKET, region=COS_REGION)
 
+    # 数据库
+    username = "root"
+    pw = "123456"
+    host = "47.94.80.98"
+    database = "graduate_testing"
+
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{pw}@{host}/{database}".format(
+        username=username,
+        pw=pw,
+        host=host,
+        database=database)
+
     @staticmethod
     def init_app(app):
         pass
 
 
 class DevelopementConfig(Config):
-
     DEBUG = True
-
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{0}:{1}@{2}/{3}".format(username, pw, host, database)
 
 
 class TestingConfig(Config):
     TESTING = True
 
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{0}:{1}@{2}/{3}".format(username, pw, host, database)
-
 
 class ProductConfig(Config):
-
     MAIL_SERVER = "smtp.163.com"
     MAIL_PORT = 465
     MAIL_USE_SSL = True
     MAIL_USERNAME = "yibangbishe@163.com"
     MAIL_PASSWORD = "68415843gG"
 
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{0}:{1}@{2}/{3}".format(username, pw, host, database)
+    database = "graduate"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{username}:{pw}@{host}/{database}".format(
+        username=Config.username,
+        pw=Config.pw,
+        host=Config.host,
+        database=database)
 
     @classmethod
     def init_app(cls, app):
@@ -73,7 +79,7 @@ class ProductConfig(Config):
 
         from logging.handlers import SMTPHandler
         # 日志
-        logging.config.fileConfig(fname="logger.conf", defaults=None, disable_existing_loggers=True)
+        logging.config.fileConfig(fname="config/logger.conf", defaults=None, disable_existing_loggers=True)
         app.logger = logging.getLogger("root")
         if getattr(cls, "MAIL_USERNAME", None) is not None:
             credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)

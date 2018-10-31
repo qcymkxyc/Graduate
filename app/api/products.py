@@ -26,6 +26,7 @@ def new_product():
     try:
         Product.upload_product(form)
     except Exception as e:
+        raise e
         return jsonify({
             "msg": "error",
             "reason" : str(e)

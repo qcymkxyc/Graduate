@@ -234,6 +234,8 @@ class Product(db.Model):
             # 图片地址
             imgs_path = []
             for img in product_form.imgs.data:
+                print(img)
+                print(type(img))
                 img_path = "{id}/{name}".format(id=product.id, name=img.filename)
                 imgs_path.append(img_path)
 
