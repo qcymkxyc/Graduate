@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, current_app
 from ..models import Product
 from . import api
 from app.product.forms import ProductAddForm
@@ -26,7 +26,7 @@ def new_product():
     try:
         Product.upload_product(form)
     except Exception as e:
-        raise e
+        current_app.logger.error(e)
         return jsonify({
             "msg": "error",
             "reason" : str(e)
