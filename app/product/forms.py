@@ -10,9 +10,11 @@ class ProductAddForm(Form):
     name = StringField("毕设题目", [DataRequired()])
     description = TextAreaField(label="毕业设计描述", validators=[DataRequired()])
     language = SelectField(label="语言", coerce=int)
-    imgs = MultipleFileField(label="图片", validators=[FileAllowed(products_images, "Image Only")])
+    imgs = MultipleFileField(label="图片",
+                             # validators=[FileAllowed(products_images, "Image Only")]
+                             )
     video = FileField(label="视频", validators=[
-        FileAllowed(products_video, message="mp4/avi allowed")
+        # FileAllowed(products_video, message="mp4/avi allowed")
     ])
     have_doc = RadioField(
         label="是否有论文",
@@ -22,9 +24,9 @@ class ProductAddForm(Form):
     )
     price = IntegerField(
         label="价格",
-        validators=[NumberRange(min=0, max=2000, message="价格必须在0 - 2000之间")]
+        validators=[DataRequired()]
     )
-    baidu_url = StringField(label="百度URL")
+    baidu_url = StringField(label="百度URL", validators=[DataRequired()])
     submit = SubmitField("提交")
 
     def __init__(self):

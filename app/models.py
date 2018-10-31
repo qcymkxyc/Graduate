@@ -13,55 +13,55 @@ from app.util import cos
 from conf import Config
 
 
-class User(db.Model,UserMixin):
+class User(db.Model, UserMixin):
     __tablename__ = "t_user"
 
-    id = db.Column(db.Integer,primary_key = True)
-    name = db.Column(db.String(20),unique = True,index = True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), unique=True, index=True)
     hash_password = db.Column(db.String(128))
-    email = db.Column(db.String(64),unique = True,index = True)
+    email = db.Column(db.String(64), unique=True, index=True)
     about_me = db.Column(db.Text())
     location = db.Column(db.String(64))
-    last_seen = db.Column(db.DateTime(),default = datetime.utcnow)
-    member_since = db.Column(db.DateTime(),default = datetime.utcnow)
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
 
-    role_id = db.Column(db.Integer,db.ForeignKey("t_role.id"))
+    role_id = db.Column(db.Integer, db.ForeignKey("t_role.id"))
 
-    confirmed = db.Column(db.Boolean,default = False)
+    confirmed = db.Column(db.Boolean, default=False)
 
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
             if self.email == current_app.config["ADMIN"]:
-                self.role = Role.query.filter_by(permission = 0xff).first()
+                self.role = Role.query.filter_by(permission=0xff).first()
             if self.role is None:
-                self.role = Role.query.filter_by(default = True).first()
+                self.role = Role.query.filter_by(default=True).first()
 
     @property
     def password(self):
         raise AttributeError("你没有权限直接查看密码")
 
     @password.setter
-    def password(self,password):
+    def password(self, password):
         self.hash_password = generate_password_hash(password)
 
-    def vertify_password(self,password):
+    def vertify_password(self, password):
         """
         验证密码是否同存储的密码一致
         :param password:
         :return:
         """
-        return check_password_hash(self.hash_password,password)
+        return check_password_hash(self.hash_password, password)
 
-    def generate_confirmation_token(self,expiration = 3600):
-        s = Serializer(current_app.config["SECRET_KEY"],expiration)
-        return s.dumps({"confirm" : self.id})
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config["SECRET_KEY"], expiration)
+        return s.dumps({"confirm": self.id})
 
-    def confirm(self,token):
+    def confirm(self, token):
         s = Serializer(current_app.config["SECRET_KEY"])
         try:
             data = s.loads(token)
-        except:
+        except BaseException:
             return False
         if data.get("confirm") != self.id:
             return False
@@ -91,30 +91,30 @@ class Permission:
 class Role(db.Model):
     __tablename__ = "t_role"
 
-    id = db.Column(db.Integer,primary_key = True)
-    name = db.Column(db.String(64),unique = True,index = True)
-    default = db.Column(db.Boolean,default = False,index = True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, index=True)
+    default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
 
-    users = db.relationship("User",backref = "role")
+    users = db.relationship("User", backref="role")
 
     def insert_roles(self):
         roles = {
-            "User" : (Permission.FOLLOW | Permission.COMMENT | Permission.WRITE_ARTICLES, True),
-            "Moderator" : (Permission.FOLLOW | Permission.COMMENT | Permission.WRITE_ARTICLES | Permission.MODERATE_COMMENTS,False),
-            "Administrator" : (0xff , False)
+            "User": (Permission.FOLLOW | Permission.COMMENT | Permission.WRITE_ARTICLES, True),
+            "Moderator": (Permission.FOLLOW | Permission.COMMENT | Permission.WRITE_ARTICLES | Permission.MODERATE_COMMENTS, False),
+            "Administrator": (0xff, False)
         }
         for r in roles:
-            role = Role.query.filter_by(name = r).first()
+            role = Role.query.filter_by(name=r).first()
             if role is None:
-                role = Role(name = r)
+                role = Role(name=r)
 
             role.permissions = roles[r][0]
             role.default = roles[r][1]
             db.session.add(role)
         db.session.commit()
 
-    def can(self,permissions):
+    def can(self, permissions):
         return (self.role is not None and
                 (self.role.permissions & permissions) == permissions)
 
@@ -125,9 +125,9 @@ class Role(db.Model):
 class Language(db.Model):
     __tablename__ = "t_language"
 
-    id = db.Column(db.Integer,primary_key = True)
-    name = db.Column(db.String(64),unique = True,index = True)
-    products = db.relationship("Product",backref = "language")
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, index=True)
+    products = db.relationship("Product", backref="language")
 
 
 class Product(db.Model):
@@ -203,7 +203,7 @@ class Product(db.Model):
 
             try:
                 db.session.commit()
-            except:
+            except :
                 db.session.rollback()
 
     @staticmethod
@@ -238,7 +238,7 @@ class Product(db.Model):
                 imgs_path.append(img_path)
 
             # 上传文件
-            cos.upload_binary_file(binary_file=product_form.video.data,key=video_path)
+            cos.upload_binary_file(binary_file=product_form.video.data, key=video_path)
             for i, img_path in enumerate(imgs_path):
                 img = product_form.imgs.data[i]
                 cos.upload_binary_file(binary_file=img, key=img_path)
@@ -250,12 +250,12 @@ class Product(db.Model):
 
             db.session.commit()
         except Exception as e:
-            print(e)
+            raise e
             db.session.rollback()
 
 
 class AnonymousUser(AnonymousUserMixin):
-    def can(self,permissions):
+    def can(self, permissions):
         return False
 
     def is_administrator(self):

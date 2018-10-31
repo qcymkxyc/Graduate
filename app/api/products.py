@@ -23,10 +23,15 @@ def get_products():
 @api.route("new_product", methods=["POST", "GET"])
 def new_product():
     form = ProductAddForm()
-    if form.validate_on_submit():
+    try:
         Product.upload_product(form)
+    except Exception as e:
+        return jsonify({
+            "msg": "error",
+            "reason" : str(e)
+        })
+    else:
         return jsonify({"msg": "success"})
-    return jsonify({"msg": "error"})
 
 
 @api.route("find_product")
