@@ -39,7 +39,7 @@ def new_product():
 def find_product():
     page = request.args.get(key="page", default=1, type=int)
     limit = request.args.get(key="limit", type=int)
-    search_name = request.args.get(key="search_name")
+    search_name = request.args.get(key="search_name", default="")
 
     filters = dict()
     filters["language_id"] = request.args.get(key="product_language", type=int)
@@ -67,10 +67,9 @@ def find_product():
         paginate(page=page, per_page=limit))
 
     items = paginate.items
-    total_page = paginate.pages
     return jsonify({
         "data": [p.to_json() for p in items],
-        "count": total_page * limit,
+        "count": paginate.total,
         "msg": "",
         "code": 0
     })

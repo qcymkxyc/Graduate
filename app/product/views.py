@@ -1,7 +1,8 @@
 from . import product_blueprint
-from flask import render_template, request
+from flask import render_template, request, flash
 from ..models import Product
-from .forms import ProductAddForm, ProductFindForm
+from .forms import ProductAddForm, ProductFindForm, ProductEditForm
+from app import db
 
 
 @product_blueprint.route("/new_product", methods=["GET", "POST"])
@@ -11,11 +12,6 @@ def new_product():
         Product.upload_product(form)
         return render_template("admin/products/add_products.html", form=form)
     return render_template("admin/products/add_products.html", form=form)
-
-
-@product_blueprint.route("/list_products", methods=["GET"])
-def list_product():
-    return render_template("admin/products/list_products.html", )
 
 
 @product_blueprint.route("/find_products", methods=["GET", "POST"])
@@ -53,3 +49,29 @@ def single_product():
     product = Product.query.filter_by(id=product_id).first()
 
     return render_template("single_product.html", product=product)
+
+
+@product_blueprint.route("/edit_product", methods=["GET", "POST"])
+def edit_product():
+    id = request.args.get("id",type=int)
+    product = Product.query.filter_by(id=id).first()
+    form = ProductEditForm()
+    if form.validate_on_submit():
+        product.name = form.name.data
+        product.language_id = form.language.data
+        product.is_doc = form.have_doc.data
+        product.prices = form.prices.data
+        product.description = form.description.data
+
+        db.session.add(product)
+        db.session.commit()
+        flash("修改成功!")
+        return render_template("edit_profile.html", form=form)
+    form.id.data = id
+    form.name.data = product.name
+    form.description.data = product.description
+    form.language.data = product.language_id
+    form.have_doc.data = product.is_doc
+    form.prices.data = product.prices
+    return render_template("edit_profile.html", form=form)
+

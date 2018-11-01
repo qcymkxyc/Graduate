@@ -41,7 +41,6 @@ def edit_profile():
         db.session.add(current_user)
         db.session.commit()
         flash("Your profile has been updated")
-        print(current_user.name)
         return redirect(url_for(".user", username=current_user.name))
 
     form.name.data = current_user.name
@@ -59,3 +58,18 @@ def static_from_root(filename):
         文件名
     """
     return send_from_directory(current_app.static_folder, filename)
+
+
+@main_blueprint.route("/admin/<module_name>/<filename>")
+def admin_file(module_name, filename):
+    """请求后台管理页面
+
+    :param filename: str
+        后台页面名称
+    :param module_name: str
+        模块名
+    :return: html
+        后台页面
+    """
+    return render_template("admin/{module}/{filename}".format(module=module_name, filename=filename))
+    # return send_from_directory("templates/admin/{module}".format(module=module_name), filename)

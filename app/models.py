@@ -158,8 +158,10 @@ class Product(db.Model):
             "language_id": self.language_id,
             "language": self.language.name,
             "description": self.description,
-            "imgs_path": self.imgs_path.split(";"),
+            "imgs_path": "" if not self.imgs_path else self.imgs_path.split(";"),
             "video_path": self.video_path,
+            "baidu_url": self.baidu_url,
+            "prices": self.prices,
             "is_doc": self.is_doc
         }
         return json_product

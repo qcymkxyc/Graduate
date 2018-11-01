@@ -47,3 +47,18 @@ class ProductFindForm(Form):
         super(ProductFindForm, self).__init__()
         self.language.choices = [(single_language.id, single_language.name) for single_language in Language.query.all()]
         self.language.choices.insert(0, (-1, "无限制"))
+
+
+class ProductEditForm(Form):
+    id = StringField(label="ID")
+    name = StringField(label="商品名")
+    description = TextAreaField(label="描述")
+    language = SelectField(label="语言", coerce=int)
+    have_doc = SelectField(label="是否有论文", choices=[(1, "是"), (0, "否")], coerce=int)
+    prices = IntegerField(label="价格")
+
+    submit = SubmitField("修改")
+
+    def __init__(self):
+        super(ProductEditForm, self).__init__()
+        self.language.choices = [(single_language.id, single_language.name) for single_language in Language.query.all()]
