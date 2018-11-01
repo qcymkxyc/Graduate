@@ -38,9 +38,9 @@ class UserModelTestCase(unittest.TestCase):
         self.assertFalse(self.user.vertify_password("dog"))
 
     def test_user_add(self):
-        self.user.email = "123456@qq.com"
+        self.user.email = "qcymkxyc@163.com"
         self.user.password = "123456"
-        self.user.name = "aaa"
+        self.user.name = "admin"
         db.session.add(self.user)
         db.session.commit()
 

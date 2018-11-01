@@ -12,7 +12,7 @@
     <div class="layui-logo">易帮毕设 - 后台管理</div>
     <!-- 头部区域（可配合layui已有的水平导航） -->
     <ul class="layui-nav layui-layout-left">
-      <li class="layui-nav-item"><a href="">控制台首页</a></li>
+      <li class="layui-nav-item"><a target="_blank" href="https://tongji.baidu.com/web/26387932/overview/index?siteId=12560978">控制台首页</a></li>
       <li class="layui-nav-item"><a target="_blank" href="{{ url_for("main.index") }}">前台首页</a></li>
       <li class="layui-nav-item"><a href="">用户</a></li>
       <li class="layui-nav-item">
@@ -103,7 +103,7 @@
 
   <div class="layui-body">
     <!-- 内容主体区域 -->
-    <div style="padding: 15px;" id="main_content">内容主体区域</div>
+    <div style="padding: 15px;" id="main_content"></div>
   </div>
 
   <div class="layui-footer">
@@ -131,6 +131,7 @@ function laod_content(path)
     main_content.empty()
     main_content.load(path)
 }
+
 </script>
 </body>
 </html>
