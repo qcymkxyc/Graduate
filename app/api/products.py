@@ -2,7 +2,7 @@ from flask import jsonify, request, current_app
 from ..models import Product
 from . import api
 from app.product.forms import ProductAddForm
-
+from app import db
 
 @api.route("/products")
 def get_products():
@@ -70,6 +70,18 @@ def find_product():
     return jsonify({
         "data": [p.to_json() for p in items],
         "count": paginate.total,
-        "msg": "",
-        "code": 0
+        "code" : 0
     })
+
+
+@api.route("delete_product", methods = ["GET"])
+def delete_product():
+    product_id = request.args.get("id", type=int)
+    try:
+        product = Product.query.filter_by(id=product_id).first()
+        db.session.delete(product)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"code": 1, "msg": str(e)})
+    else:
+        return jsonify({"code": 0})

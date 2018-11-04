@@ -1,14 +1,19 @@
 <script type="text/html" id="handle_bar">
     <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
-    <button class="layui-btn layui-btn-xs layui-btn-danger">删除</button>
-    <button class="layui-btn layui-btn-xs layui-btn-warm" lay-event="detail">查看</button>
+        <button class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+        <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+        <button class="layui-btn layui-btn-xs layui-btn-warm" lay-event="detail">查看</button>
+    </div>
+</script>
+<script type="text/html" id="product_toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="reload">刷新</button>
     </div>
 </script>
 
 <h1 align="center" style="padding-top: 30px;">商品列表</h1>
 <div style="padding-top: 30px;">
-    <table class="layui-hide" id="products_table" lay-filter="demo"></table>
+    <table class="layui-hide" id="products_table" lay-filter="products_table"></table>
 </div>
 
 
@@ -20,30 +25,52 @@ layui.use('table', function() {
         elem: '#products_table'
         , url: 'api/v1/find_product'
         , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        , toolbar:"#product_toolbar"
         , cols: [[
             {field: 'id', width: 80, title: 'ID', sort: true}
             , {field: 'name', width: 150, title: '产品名'}
             , {field: 'language', width: 80, title: '语言', sort: true}
-            , {field: 'description', width: 80, title: '描述'}
+            , {field: 'description', width: 80, title: '描述',width:300}
             , {field: 'imgs_path', title: '图片路径', width: 200}
             , {field: 'video_path', title: '视频路径', sort: true}
             , {field: 'baidu_url', title: "百度地址"}
             , {field: 'prices', title: "价格"}
             , {field: 'is_doc', title: '是否有文档', sort: true}
-            , {fixed: "right", title: '操作', toolbar: "#handle_bar", width: "150"}
+            , {title: '操作', toolbar: "#handle_bar", width: "150"}
         ]]
         , page: true
     });
 
     //监听工具条
-    table.on('tool(demo)', function (obj) {
-        var data = obj.data;
+    table.on('tool(products_table)', function (obj) {
+        data = obj.data;
         if (obj.event === 'detail') {
+            // 查看商品
             window.open("products/single_product?id="+data.id)
         } else if (obj.event === 'del') {
-            window.open("products/edit_product?id="+data.id)
+            layer.confirm('确定删除?', function(index){
+                // 删除确定
+                $.ajax({
+                    url:"api/v1/delete_product",
+                    data:{"id":data.id},
+                    success:function (data, textStatus) {
+                        layer.alert(textStatus)
+                    }
+                })
+                layer.close(index);
+            });
        } else if (obj.event === 'edit') {
+            // 编辑商品
             window.open("products/edit_product?id="+data.id)
+        }
+    });
+
+    table.on('toolbar(products_table)', function (obj) {
+        switch (obj.event) {
+            case "reload":
+                table.reload("products_table")
+                break;
+
         }
     });
 });

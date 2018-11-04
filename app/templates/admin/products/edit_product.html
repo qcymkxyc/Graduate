@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} 易帮计算机毕设 - Profile {% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1>编辑商品</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>视频</h3>
+            <video src="{{ form.video.data}}" controls="controls" width="100%" height="100%"></video>
+        </div>
+        <div class="col-md-offset-1 col-md-4">
+            <h3>字段编辑</h3>
+           {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            <h2>图片</h2>
+            <h3>添加商品图片</h3>
+            <form class="form-group form-horizontal" action="{{ url_for("products.add_imgs") }}"
+                  method="post" enctype="multipart/form-data">
+                {{ img_add_form.hidden_tag() }}
+                {{ img_add_form.imgs.label }}{{ img_add_form.imgs() }}
+                {{ img_add_form.submit(class="btn btn-default") }}
+            </form>
+           <h3>修改商品图片</h3>
+            {% if form.imgs_path.data%}
+                {% for img_path in form.imgs_path.data.split(";") %}
+                    <div class="thumbnail">
+                    <img src="{{ img_path }}">
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
