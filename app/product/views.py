@@ -59,7 +59,6 @@ def single_product():
 @login_required
 def edit_product():
     product_id = request.args.get("id", type=int)
-    print(product_id)
     form = ProductEditForm()
     product = Product.query.filter_by(id=product_id).first()
     if form.validate_on_submit():
@@ -70,10 +69,11 @@ def edit_product():
         product.description = form.description.data
 
         # 上传视频
-        product_video = form.video.data
-        video_path = "{product_id}/{name}".format(product_id=product_id, name=product_video.filename)
-        cos.upload_binary_file(binary_file=product_video, key=video_path)
-        product.video_path = Config.COS_BUCKET_PATH + "/" + video_path
+        if form.video.data:
+            product_video = form.video.data
+            video_path = "{product_id}/{name}".format(product_id=product_id, name=product_video.filename)
+            cos.upload_binary_file(binary_file=product_video, key=video_path)
+            product.video_path = Config.COS_BUCKET_PATH + "/" + video_path
 
         db.session.add(product)
         db.session.commit()
